@@ -1,0 +1,385 @@
+---
+description: Dump and load context to facilitate handoff during mob programming session
+globs:
+alwaysApply: false
+---
+
+# Mob Programming Context Bridge - Cursor Rules
+
+## Context Bridge Document Management
+
+When asked to "create handoff document" or "update context bridge":
+
+### Initial Document Creation
+Create a new file named `mob-context-bridge.md` with this structure:
+
+```markdown
+# MOB PROGRAMMING CONTEXT BRIDGE
+**Session:** [Current Date] | **Project:** [Project Name]  
+**Last Updated:** [Timestamp] by [Current Role]
+
+## 🎯 CURRENT FOCUS
+**Active Task:** [What we're working on RIGHT NOW]  
+**AI Agent State:** [What the AI currently understands about the task]  
+**Next 5 minutes:** [Immediate next steps]  
+**Blocker/Issue:** [Any current challenge or none]
+
+## 📋 PROGRESS TRACKER
+### ✅ Completed Tasks
+- [Task] - [Timestamp] - [Who completed]
+
+### 🔄 In Progress  
+- [Task] - [Current owner] - [Status details]
+
+### ⏳ Next Up (Priority Order)
+1. [Next task] - [Brief description]
+2. [Following task] - [Brief description]
+
+### ❌ Blocked/Issues
+- [Issue] - [Why blocked] - [Who can unblock]
+
+## 🤖 AI COLLABORATION LOG
+### ✅ Prompts Working Well
+- "[Successful prompt pattern]" - [What it achieved]
+- "[Another working pattern]" - [Context where it works]
+
+### ❌ Prompts That Failed  
+- "[Failed prompt]" - [Why it didn't work]
+- "[Ineffective approach]" - [What went wrong]
+
+### 🔧 Current AI Working Style
+**Prompting approach:** [How we're currently interacting with AI]  
+**AI strengths observed:** [What AI is handling well]  
+**AI limitations noted:** [What to avoid or work around]
+
+## 🏗️ DECISIONS LOG
+### Architecture Decisions
+- [Decision] - [Rationale] - [Timestamp]
+
+### Business Logic Interpretations  
+- [Requirement] → [Our interpretation] - [Who decided]
+
+### Trade-offs Made
+- [Choice A vs Choice B] → [Chose A because...] - [Timestamp]
+
+### Constraints Identified
+- **Technical:** [Limitation and impact]
+- **Business:** [Requirement or restriction]
+- **Time:** [Deadline or scope constraint]
+
+## 🔄 HANDOFF READY (For Next Person)
+**For Next Role:** [Specific guidance for incoming person]  
+**Context to Emphasize with AI:** [What to highlight or remind AI about]  
+**Watch Out For:** [Potential issues to monitor]  
+**Quick Win:** [Easy task to start with for momentum]  
+**Handoff Notes:** [Any specific context or warnings]
+
+---
+*Update this document every 2-3 minutes. Use timestamps. Keep entries brief but specific.*
+```
+
+### Context Analysis from AI-Generated Development
+
+**Key Insight**: Since AI writes most of the code, the LLM has comprehensive visibility into the development process through its own outputs.
+
+**Rich Information Sources Available:**
+- All prompts requesting code generation
+- All AI-generated code and responses
+- Success/failure of AI implementations
+- Iterative refinements and corrections
+- Technical decisions embedded in prompts
+
+### AI-Centric Progress Tracking
+
+**Automatic Progress Detection:**
+```
+AI generates working code → Task progressing
+AI provides complete implementation → Feature likely completed
+AI generates tests for feature → Testing phase
+AI refactors/optimizes code → Refinement phase
+AI fixes bugs in previous code → Debugging phase
+```
+
+**Quality Indicators from AI Responses:**
+```
+High-quality AI output:
+- Complete, runnable code generated on first try
+- Comprehensive error handling included
+- Clean, well-structured implementation
+- AI provides detailed explanations
+
+Lower-quality AI output:
+- Incomplete code requiring follow-up prompts
+- Missing error handling or edge cases
+- Code that requires significant human modification
+- AI asks for clarification or seems uncertain
+```
+
+### AI Collaboration Pattern Recognition
+
+**Successful Prompt Patterns (auto-detect):**
+```
+Patterns that produce good code:
+- Specific, detailed requirements in prompts
+- Clear context about existing codebase
+- Explicit constraints and requirements
+- Examples of desired output format
+
+Example detection:
+"Generate TypeScript interface for user data with validation" 
+→ Produces clean, working code 
+→ Add to successful patterns
+```
+
+**Unsuccessful Prompt Patterns (auto-detect):**
+```
+Patterns that require multiple iterations:
+- Vague or ambiguous requirements
+- Missing context about existing code
+- Conflicting requirements in single prompt
+- Overly complex requests without breaking down
+
+Example detection:
+"Create the user system" → AI asks for clarification
+→ Multiple back-and-forth exchanges needed
+→ Add to patterns needing improvement
+```
+
+### Technical Decision Tracking
+
+**Decisions Visible in AI Conversations:**
+```
+Architecture decisions reflected in prompts:
+- "Generate REST API using Express instead of GraphQL"
+- "Create React components with hooks, not class components"  
+- "Implement authentication with JWT tokens"
+
+Technology choices visible in AI responses:
+- AI generates code using specific libraries/frameworks
+- AI suggests alternative approaches in responses
+- AI implements patterns that become team standards
+```
+
+**Decision Evolution Tracking:**
+```
+Track prompt evolution to see decision changes:
+Session start: "Generate basic user validation"
+Later: "Generate user validation using Joi library"
+→ Decision captured: Chose Joi for validation
+
+Track AI suggestions that get adopted:
+AI suggests: "Consider using async/await instead of promises"
+Next prompts use async/await pattern
+→ Decision captured: Adopted async/await pattern
+```
+
+### Automated Context Updates from AI Activity
+
+**When "update context" is called:**
+
+1. **Analyze recent AI code generation** (last 10-15 interactions)
+2. **Identify completed implementations** vs work in progress
+3. **Extract technical decisions** from prompt evolution
+4. **Assess AI collaboration effectiveness** from response quality
+5. **Generate comprehensive update** with minimal human input needed
+
+**Example Auto-Generated Update:**
+```
+📋 PROGRESS (from AI activity):
+✅ Completed: User authentication system (JWT implementation generated and working)
+✅ Completed: Database schema (PostgreSQL tables generated)
+🔄 In Progress: Password reset functionality (AI generated email service, working on frontend)
+
+🤖 AI COLLABORATION PATTERNS:
+✅ Working Well: 
+  - "Generate [specific component] with [detailed requirements]" format
+  - Providing existing code context in prompts
+  - Breaking complex features into smaller prompt requests
+
+❌ Needs Improvement:
+  - Prompts for UI styling (AI generates functional but not aesthetically pleasing CSS)
+  - Complex business logic (requires multiple iterations to get right)
+
+🏗️ TECHNICAL DECISIONS (from AI implementations):
+  - Authentication: JWT tokens (AI generated complete implementation)
+  - Database: PostgreSQL with Sequelize ORM (AI set up models)
+  - Validation: Joi library (AI suggested and implemented)
+  - API: RESTful endpoints (AI generated Express routes)
+
+🎯 CURRENT FOCUS (from recent prompts):
+  - Working on: Password reset email templates
+  - AI Context: Knows about user schema, JWT setup, email service configuration
+  - Next: Frontend integration for password reset flow
+```
+
+### Handoff Generation from AI Activity
+
+**"prepare handoff" command analyzes AI conversation history:**
+```
+🔄 HANDOFF READY (auto-generated):
+
+For Next Person:
+- Focus Area: Password reset frontend integration
+- Current AI Context: AI has generated backend email service, knows user schema and JWT patterns
+
+AI Collaboration Status:
+- Working Well: Component generation with specific TypeScript requirements
+- Watch Out For: AI tends to overcomplicate React state management
+- Successful Pattern: "Generate [component] that connects to [specific API endpoint]"
+
+Technical Context:
+- Codebase State: Auth system complete, email service ready, need frontend forms
+- Key Files AI Generated: /auth/jwt.js, /email/service.js, /models/user.js
+- Next Integration: Connect password reset form to /api/reset-password endpoint
+
+Guidance for Next Prompt:
+"Continue the password reset implementation by generating a React component that uses the existing email service. Reference the user schema and JWT patterns already established."
+```
+
+### Minimal Manual Context for Business Logic
+
+**Only need manual input for:**
+```
+Business context not reflected in code:
+"business rule: password reset expires in 24 hours"
+"constraint: must work on mobile browsers"  
+"priority: security over user experience"
+
+External factors affecting AI work:
+"client feedback: simplify the UI"
+"performance issue: API calls too slow"
+"blocker: waiting for design approval"
+```
+
+### Real-Time AI Performance Tracking
+
+**Continuous assessment of AI effectiveness:**
+```
+Track AI success metrics:
+- First-try success rate (prompts that work immediately)
+- Iteration count (how many refinements needed)
+- Code quality (clean, maintainable output)
+- Integration success (how well AI code works with existing code)
+
+Automatically update collaboration patterns:
+High success rate → Add prompt pattern to "Working Well"
+Multiple iterations needed → Analyze what made prompt unclear
+AI asks for clarification → Note information AI needs upfront
+```
+
+### Context Bridge Automation Level
+
+**80-90% automated tracking** when AI writes most code:
+- Progress automatically detected from AI code generation
+- Technical decisions captured from prompt evolution  
+- AI collaboration patterns learned from response quality
+- Current focus inferred from recent prompt topics
+
+**10-20% manual input** for:
+- Business priorities and constraints
+- External blockers and dependencies
+- User experience decisions
+- Non-technical team concerns
+
+**Realistic session flow:**
+```
+15 minutes of AI-assisted development → lots of prompts, responses, generated code
+
+Someone: "update context"
+
+LLM: Automatically generates comprehensive update from its own activity
+
+Team: "add: client wants mobile-first design" (minimal manual addition)
+
+Result: Complete, accurate context with minimal human effort
+```
+
+### Fallback Commands
+
+For when user isn't sure which section:
+
+**`"log this: [information]"`** 
+- Cursor analyzes content and suggests appropriate section
+- Provides options: "This sounds like a [decision/progress/ai-note]. Should I add it to [section]?"
+
+**`"context help"`**
+- Shows list of available explicit commands
+- Displays current document sections that need updates
+- Suggests what type of update might be needed based on recent activity
+
+### Command Examples in Practice
+
+```
+✅ Clear commands:
+"completed: user authentication module"
+"good prompt: generate TypeScript interfaces for user data"  
+"architecture decision: using JWT tokens for session management"
+"prepare handoff"
+
+❌ Ambiguous commands:
+"update context" (too vague)
+"we made a choice" (what kind of choice?)
+"AI helped" (helped with what specifically?)
+
+🔄 Better alternatives:
+"tradeoff: chose JWT over sessions for scalability"  
+"good prompt: AI generated clean JWT implementation"
+"handoff note: explain JWT flow to next person"
+```
+
+### Update Response Format
+
+When updating the document, respond with:
+
+1. **What was updated:** Brief description of changes made
+2. **Key changes:** Highlight important new information  
+3. **Handoff status:** Whether document is ready for next rotation
+4. **Recommendations:** Suggest any actions based on updates
+
+Example response:
+```
+✅ Updated Context Bridge:
+- Current Focus: Moved to error handling implementation
+- AI Collaboration: Added successful testing prompt pattern
+- Decisions: Documented choice of Joi validation library
+- Handoff Ready: Updated for next person focusing on API endpoints
+
+🔄 Ready for handoff - next person should emphasize existing auth context with AI.
+```
+
+### Quick Status Commands
+
+When asked for "context status" or "handoff check":
+- Provide summary of current state from all sections
+- Identify any missing information that should be updated
+- Confirm document readiness for rotation
+
+When asked for "ai context summary":
+- Summarize what the AI should currently understand
+- List key context points for next person to emphasize
+- Identify any context drift risks
+
+### Document Maintenance Rules
+
+1. **Keep entries concise but specific** - avoid verbose descriptions
+2. **Always timestamp updates** - use HH:MM format for micro-updates  
+3. **Use consistent formatting** - maintain the emoji structure and sections
+4. **Update multiple sections** when one change affects others
+5. **Prioritize actionable information** - focus on what next person needs to know
+6. **Archive completed items** - move old completed tasks to bottom or separate section after 1 hour
+
+### Integration with Development Workflow
+
+When implementing code or making technical decisions:
+- **Automatically suggest context bridge updates** based on the work being done
+- **Prompt for decision logging** when architectural choices are made
+- **Update AI collaboration log** when testing new prompting approaches
+- **Flag handoff updates** when significant progress or changes occur
+
+### Error Recovery
+
+If context bridge document is corrupted or lost:
+- **Regenerate from conversation history** - scan recent AI conversation for context
+- **Prompt team for key decisions** - ask for critical information to rebuild
+- **Create simplified version** focusing on immediate next steps
+- **Gradually rebuild** full context as session continues
